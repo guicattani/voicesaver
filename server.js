@@ -17,8 +17,8 @@ app.post('/sendfile', bodyParser.raw(options), function(req,res){
 
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  const ID = 'AKIAJKZX5BWRB2CMEY4A';
-  const SECRET = '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';
+  const ID = process.env.S3_ID;
+  const SECRET = process.env.S3_SECRET;
   const BUCKET_NAME = 'capsulemaglev-voices';
   const s3 = new AWS.S3({
       accessKeyId: ID,
@@ -48,5 +48,5 @@ app.use('/', function(req,res){
 
 
 const server = http.createServer(app);
-const port = 3000;
-server.listen(process.env.PORT || 5000);console.debug('Server listening on port ' + port);
+const port = process.env.PORT || 5000;
+server.listen(port);console.debug('Server listening on port ' + port);
