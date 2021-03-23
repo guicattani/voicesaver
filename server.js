@@ -13,13 +13,12 @@ const options = {
 };
 
 app.post('/sendfile', bodyParser.raw(options), function(req,res){
-  console.log(req.body)
-
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   const ID = process.env.S3_ID;
   const SECRET = process.env.S3_SECRET;
   const BUCKET_NAME = 'capsulemaglev-voices';
+
   const s3 = new AWS.S3({
       accessKeyId: ID,
       secretAccessKey: SECRET
@@ -33,9 +32,11 @@ app.post('/sendfile', bodyParser.raw(options), function(req,res){
 
   s3.upload(params, function(err, data) {
   if (err) {
+      res.sendStatus(500);
       throw err;
   }
     console.log(`File uploaded successfully. ${data.Location}`);
+    res.sendStatus(200);
   });
 });
 
@@ -44,6 +45,7 @@ app.use('/', function(req,res){
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     res.render('index');
     console.log('served')
+    res.sendStatus(200);
 });
 
 
